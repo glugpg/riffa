@@ -108,10 +108,11 @@ def draw(tickets):
     Funziona che esegue l'estrazione dei
     biglietti e ne mostra il risultato
     """
-    ticket=''
     if len(tickets) > 0:
         ticket = tickets[randint(0, len(tickets) - 1)]
         tickets.remove(ticket)
+    else:
+        raise IndexError('list parameter is empty')
     return ticket
 
 if __name__ == '__main__':
