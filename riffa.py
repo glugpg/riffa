@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 __author__ = 'Marco Rufinelli'
 __date__ = '24/10/2015'
-__version__ = '0.1'
+__version__ = '0.2'
 __licence__ = 'GPLv3'
 __copyright__ = 'Copyright 2015, Associazione PerugiaGNULug'
 
@@ -31,7 +31,7 @@ from argparse import ArgumentParser
 from random import randint
 from csv import reader
 
-def get_parameters():
+def _get_parameters():
     """
     Funzione che recupera dalla riga di comando
     i parametri utilizzati dallo script
@@ -61,7 +61,7 @@ def get_parameters():
                         help='Numero massimo di estrazioni')
     return parser.parse_args()
 
-def show_header(show_best_wishes):
+def _show_header(show_best_wishes):
     """
     Funzione che mostra l'intestazione della riffa
     """
@@ -77,7 +77,7 @@ def show_header(show_best_wishes):
     raw_input()
     return
 
-def show_ticket(counter, ticket):
+def _show_ticket(counter, ticket):
     """
     Funzione che mostra il ticket
     """
@@ -87,20 +87,21 @@ def show_ticket(counter, ticket):
            '  -  {0}'.format(ticket[1].title()))
     return
 
-def load_tickets(filename, tickets, number, name, surname):
+def load_tickets(filename, number_col, name_col, surname_col):
     """
     Funziona che carica in un array l'elenco dei
     biglietti e dei corrispondenti nominativi
     che partecipano alla riffa
     """
+    tickets=[]
     file = open(filename, 'r')
     csv_text = reader(file, delimiter=',', quotechar='"')
     for row in csv_text:
-        if row[number].isdigit():
-            tickets.append((row[number],
-                            "{0} {1}".format(row[name], row[surname])))
+        if row[number_col].isdigit():
+            tickets.append((row[number_col],
+                            "{0} {1}".format(row[name_col], row[surname_col])))
     file.close()
-    return
+    return tickets
 
 def raffle(tickets):
     """
@@ -112,22 +113,18 @@ def raffle(tickets):
     return ticket
 
 if __name__ == '__main__':
-    ticket_list=[]
+    args = _get_parameters()
+    _show_header(True)
+    ticket_list = load_tickets(filename = args.filename,
+                               number_col = args.ticket_col,
+                               name_col = args.name_col,
+                               surname_col = args.surname_col)
 
-    args=get_parameters()
-
-    show_header(True)
-    load_tickets(filename=args.filename,
-                 tickets=ticket_list,
-                 number=args.ticket_col,
-                 name=args.name_col,
-                 surname=args.surname_col)
-
-    show_header(False)
+    _show_header(False)
     counter = 1
     while(len(ticket_list) > 0
           and (counter <= args.max_draws
                or args.max_draws == 0)):
-        show_ticket(counter, raffle(ticket_list))
+        _show_ticket(counter, raffle(ticket_list))
         raw_input()
         counter += 1
