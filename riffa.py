@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 __author__ = 'Marco Rufinelli'
 __date__ = '24/10/2015'
-__version__ = '0.2'
+__version__ = '0.3'
 __licence__ = 'GPLv3'
 __copyright__ = 'Copyright 2015, Associazione PerugiaGNULug'
 
@@ -108,8 +108,10 @@ def draw(tickets):
     Funziona che esegue l'estrazione dei
     biglietti e ne mostra il risultato
     """
-    ticket = tickets[randint(0, len(tickets) - 1)]
-    tickets.remove(ticket)
+    ticket=''
+    if len(tickets) > 0:
+        ticket = tickets[randint(0, len(tickets) - 1)]
+        tickets.remove(ticket)
     return ticket
 
 if __name__ == '__main__':
