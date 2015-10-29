@@ -103,7 +103,7 @@ def load_tickets(filename, number_col, name_col, surname_col):
     file.close()
     return tickets
 
-def raffle(tickets):
+def draw(tickets):
     """
     Funziona che esegue l'estrazione dei
     biglietti e ne mostra il risultato
@@ -125,6 +125,6 @@ if __name__ == '__main__':
     while(len(ticket_list) > 0
           and (counter <= args.max_draws
                or args.max_draws == 0)):
-        _show_ticket(counter, raffle(ticket_list))
+        _show_ticket(counter, draw(ticket_list))
         raw_input()
         counter += 1
